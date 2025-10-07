@@ -5,7 +5,7 @@ import sys
 
 class Config:
     def __init__(self):
-        self.login_url = "https://www.zhihuishu.com/"
+        self.login_url = "https://passport.zhihuishu.com/login"
         config = self.loading_config()
         if not config:
             Logger().error("配置加载失败，程序无法继续运行。")
