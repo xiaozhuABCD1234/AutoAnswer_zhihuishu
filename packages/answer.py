@@ -1,24 +1,21 @@
 from openai import OpenAI
 import re
-from src.logger import Logger
-from src.configs import Config
+from packages.logger import logger
+from packages.config import cfg
 import time
 from playwright.sync_api import Page
-from src.utils import get_random
-
-logger = Logger()
-config = Config()
+from packages.utils import get_random
 
 client = OpenAI(
-    api_key=config.openai_api_key,
-    base_url=config.openai_base_url,
+    api_key=cfg.llm.api_key,
+    base_url=cfg.llm.base_url,
 )
 
 
 def get_answer(question: str) -> str:
     try:
         completion = client.chat.completions.create(
-            model=config.openai_model,
+            model=cfg.llm.model,
             messages=[
                 {
                     "role": "system",
@@ -26,8 +23,8 @@ def get_answer(question: str) -> str:
                 },
                 {"role": "user", "content": f"问题：{question}"},
             ],
-            temperature=config.temperature,
-            max_tokens=config.max_tokens,
+            temperature=cfg.llm.temperature,
+            max_tokens=cfg.llm.max_tokens,
         )
         ans: str = completion.choices[0].message.content
         logger.info("请求成功！")
@@ -86,7 +83,7 @@ def check_had_answered(page: Page) -> bool:
     page.wait_for_load_state("networkidle")
 
     if not page.locator("div").filter(has_text="我来回答").nth(2).is_visible():
-        logger.warn("没有找到“我来回答”按钮，你可能已经回答了。")
+        logger.warning("没有找到“我来回答”按钮，你可能已经回答了。")
         return True
     else:
         return False
@@ -107,10 +104,10 @@ def fill_answer_content(page2: Page, answer: str) -> bool:
     try:
         textbox = page2.get_by_role("textbox", name="请输入您的回答")
         textbox.click()
-        if(config.enabled_random_time):
-            time.sleep(get_random(config.delay_time_s) // 2)
+        if(cfg.option.enabled_random_time):
+            time.sleep(get_random(cfg.option.delay_time_s) // 2)
         else:
-            time.sleep(config.delay_time_s//2)
+            time.sleep(cfg.option.delay_time_s//2)
         textbox.fill(answer)
         return True
     except Exception as e:
@@ -122,10 +119,10 @@ def submit_answer(page2: Page) -> bool:
     """提交回答并关闭页面"""
     try:
         page2.get_by_text("立即发布").click()
-        if(config.enabled_random_time):
-            time.sleep(get_random(config.delay_time_s) // 2)
+        if(cfg.option.enabled_random_time):
+            time.sleep(get_random(cfg.option.delay_time_s) // 2)
         else:
-            time.sleep(config.delay_time_s//2)
+            time.sleep(cfg.option.delay_time_s//2)
         logger.info("发布成功")
         page2.close()
         return True
@@ -141,7 +138,7 @@ def answer(page: Page, questions: list[str]) -> None:
         logger.info(f"处理中：{index}/{total_questions}")
         logger.info(f"问题{index}：{question}")
         if not upload_answer(page, question):
-            logger.warn(f"问题{index}处理失败，跳过")
+            logger.warning(f"问题{index}处理失败，跳过")
             continue
 
 

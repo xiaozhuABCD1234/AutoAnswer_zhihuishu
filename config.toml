@@ -1,0 +1,47 @@
+[account]
+username     = "${USERNAME}" # 可以用环境变量 USERNAME 或者.env
+password = "${PASSWORD}" # 可以用环境变量 PASSWORD 或者.env
+
+[option]
+driver               = "msedge"
+browser_path         = ""
+delay_time_s         = 10
+enabled_random_time  = true
+
+question-urls=[
+    "https://example.com"
+]  # 空表数组，留 4 个占位
+
+
+[llm]
+base_url   = "https://api.deepseek.com/v1"
+api_key    = "${OPENAI_API_KEY}" # api_key 由环境变量 OPENAI_API_KEY 提供，不在推荐此处写死
+model      = "deepseek-chat"
+max_tokens = 500
+temperature = 1.3
+
+[log]
+# 日志级别（从高到低）：
+# CRITICAL > ERROR > WARNING > INFO > DEBUG > TRACE
+# 只输出 >= 该级别的日志
+# 说明：
+#   - 生产环境建议 WARNING 或 ERROR，减少磁盘占用
+#   - 本地开发可调成 DEBUG 或 TRACE，方便排障
+level = "DEBUG"
+
+# 写进文件的日志级别，独立控制，防止控制台刷爆
+# 例如：控制台看 DEBUG，文件只存 WARNING 及以上
+file_level = "WARNING"
+
+# 日志文件路径配置
+file_path = "log/app.log"
+
+# 是否启用彩色日志输出到控制台
+colorful_output = true
+
+# 日志轮转配置
+rotation = "10 MB"  # 单个日志文件最大大小
+retention = 5       # 保留历史日志文件数量
+
+# 时间戳格式
+time_format = "%Y-%m-%d %H:%M:%S"

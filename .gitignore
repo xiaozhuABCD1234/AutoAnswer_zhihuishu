@@ -1,1 +1,5 @@
 *.pyc
+.venv/
+.env
+logs/
+data/
