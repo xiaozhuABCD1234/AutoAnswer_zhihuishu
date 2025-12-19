@@ -3,6 +3,7 @@ username     = "${USERNAME}" # 可以用环境变量 USERNAME 或者.env
 password = "${PASSWORD}" # 可以用环境变量 PASSWORD 或者.env
 
 [option]
+# 可用的配置项: chrome、msedge、chrome-beta、msedge-beta、chrome-dev、msedge-dev、chrome-canary、msedge-canary
 driver               = "msedge"
 browser_path         = ""
 delay_time_s         = 10

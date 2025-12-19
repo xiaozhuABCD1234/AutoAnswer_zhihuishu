@@ -1,7 +1,7 @@
 import sys
 from loguru import logger
 from pathlib import Path
-from .config import cfg
+from packages.config import cfg
 
 # 移除默认的 stderr 处理器
 logger.remove()

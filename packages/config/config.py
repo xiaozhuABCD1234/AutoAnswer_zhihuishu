@@ -11,7 +11,7 @@ import dotenv
 from pydantic import BaseModel, Field, field_validator
 
 # ---------- 路径常量 ----------
-TOML_PATH: Final = Path(__file__).resolve().parent.with_name("config.toml")
+TOML_PATH: Final = Path(__file__).resolve().parent.parent.with_name("config.toml")
 
 # ---------- 通用校验 ----------
 LOG_LEVELS: Final = {
@@ -40,15 +40,15 @@ class OptionCfg(BaseModel):
     )
     delay_time_s: int = Field(default=10, ge=0, description="操作延迟基准（秒）")
     enabled_random_time: bool = Field(default=True, description="是否启用随机延时")
-    question_urls: List[str] = Field(
+    Q_A_urls: List[str] = Field(
         default_factory=lambda: [],
-        description="待刷题页面地址列表",
+        description="待Q&A页面地址列表",
     )
 
 
 class LLMCfg(BaseModel):
     base_url: str = Field(
-        default="https://api.deepseek.com/v1", description="API 基地址"
+        default="https://api.deepseek.com/v1", description="API 地址"
     )
     api_key: str = Field(
         default="${OPENAI_API_KEY}",

@@ -1,6 +1,6 @@
 from openai import OpenAI
 import re
-from packages.logger import logger
+from packages.logging.log import logger
 from packages.config import cfg
 import time
 from playwright.sync_api import Page
@@ -104,10 +104,10 @@ def fill_answer_content(page2: Page, answer: str) -> bool:
     try:
         textbox = page2.get_by_role("textbox", name="请输入您的回答")
         textbox.click()
-        if(cfg.option.enabled_random_time):
+        if cfg.option.enabled_random_time:
             time.sleep(get_random(cfg.option.delay_time_s) // 2)
         else:
-            time.sleep(cfg.option.delay_time_s//2)
+            time.sleep(cfg.option.delay_time_s // 2)
         textbox.fill(answer)
         return True
     except Exception as e:
@@ -119,10 +119,10 @@ def submit_answer(page2: Page) -> bool:
     """提交回答并关闭页面"""
     try:
         page2.get_by_text("立即发布").click()
-        if(cfg.option.enabled_random_time):
+        if cfg.option.enabled_random_time:
             time.sleep(get_random(cfg.option.delay_time_s) // 2)
         else:
-            time.sleep(cfg.option.delay_time_s//2)
+            time.sleep(cfg.option.delay_time_s // 2)
         logger.info("发布成功")
         page2.close()
         return True

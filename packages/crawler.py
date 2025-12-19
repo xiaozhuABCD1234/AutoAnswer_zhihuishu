@@ -2,7 +2,7 @@ from playwright.sync_api import (
     sync_playwright,
     Page,
 )
-from packages.logger import logger
+from packages.logging.log import logger
 
 def crawl_popular_question(page: Page, url: str) -> list[str]:
     """爬取热门问题
