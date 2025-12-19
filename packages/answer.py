@@ -1,10 +1,12 @@
 from openai import OpenAI
-import re
+
 from packages.logging.log import logger
 from packages.config import cfg
 import time
 from playwright.sync_api import Page
 from packages.utils import get_random
+from packages.services.llm import gen_answer
+from packages.models.token_usage import TokenUsage
 
 client = OpenAI(
     api_key=cfg.llm.api_key,
@@ -14,22 +16,14 @@ client = OpenAI(
 
 def get_answer(question: str) -> str:
     try:
-        completion = client.chat.completions.create(
-            model=cfg.llm.model,
-            messages=[
-                {
-                    "role": "system",
-                    "content": "你是一个严谨的中文学生，请你回答同学的问题来帮助同学，回答需满足：\n1. 用口语化中文，50字内分点回答\n2. 回避政治、暴力、伦理等敏感内容\n3. 若问题敏感，回复'此问题不便讨论'\n4. 禁用Markdown格式\n请确保内容符合中国法律法规。",
-                },
-                {"role": "user", "content": f"问题：{question}"},
-            ],
-            temperature=cfg.llm.temperature,
-            max_tokens=cfg.llm.max_tokens,
+        # 使用新的 gen_answer 函数，它返回答案和用量信息的元组
+        ans, usage_info = gen_answer(
+            question=question,
+            context="你是一个严谨的中文学生，请你回答同学的问题来帮助同学，回答需满足：\n1. 用口语化中文，50字内分点回答\n2. 回避政治、暴力、伦理等敏感内容\n3. 若问题敏感，回复'此问题不便讨论'\n4. 禁用Markdown格式\n请确保内容符合中国法律法规。"
         )
-        ans: str = completion.choices[0].message.content
         logger.info("请求成功！")
-        ans = re.sub(r"<think>.*?</think>", "", ans, flags=re.DOTALL).strip()
         logger.info(f"回答：{ans}")
+        logger.info(f"Token使用情况 - 输入: {usage_info.prompt_tokens}, 输出: {usage_info.completion_tokens}, 总计: {usage_info.total_tokens}")
         return ans
     except Exception as e:
         logger.error(f"API请求失败: {str(e)}")

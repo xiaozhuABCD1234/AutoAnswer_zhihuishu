@@ -1,3 +1,4 @@
+from time import sleep
 from playwright.sync_api import (
     sync_playwright,
     Page,
@@ -19,6 +20,8 @@ def crawl_popular_question(page: Page, url: str) -> list[str]:
         page.goto(url, timeout=120000)
         page.wait_for_load_state("networkidle", timeout=120000)  # 等待网络空闲
 
+        page.get_by_text("最新").click()
+        page.get_by_text("热门").click()
         # 等待问题容器加载（最多等待60秒）
         page.wait_for_selector(".question-item", timeout=60000)
         questions = page.query_selector_all(".question-item")
@@ -68,6 +71,7 @@ def crawl_latest_question(page: Page, url: str) -> list[str]:
         page.wait_for_load_state("networkidle", timeout=120000)
         page.wait_for_selector(".question-item", timeout=60000)
 
+        sleep(5)
         # 点击"最新"排序标签（核心差异点）
         page.get_by_text("最新").click()
         page.wait_for_load_state("networkidle")  # 等待排序后的内容加载
