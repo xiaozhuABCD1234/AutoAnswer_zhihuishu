@@ -77,6 +77,25 @@ def crawl_latest_question(page: Page, url: str) -> list[str]:
         page.wait_for_load_state("networkidle")  # 等待排序后的内容加载
         page.wait_for_selector(".question-item", timeout=60000)
 
+        page.get_by_text("课程问答小助手 智慧树官方服务 提供平台课程学习、课程问答相关问题解答，可点击查看详细内容！").click()
+        
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
+        page.locator("body").press("PageDown")
         # 后续解析逻辑与热门问题相同
         questions = page.query_selector_all(".question-item")
         if not questions:
