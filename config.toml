@@ -1,23 +1,22 @@
 [account]
-username     = "${USERNAME}" # 可以用环境变量 USERNAME 或者.env
+username = "${USERNAME}" # 可以用环境变量 USERNAME 或者.env
 password = "${PASSWORD}" # 可以用环境变量 PASSWORD 或者.env
 
 [option]
 # 可用的配置项: chrome、msedge、chrome-beta、msedge-beta、chrome-dev、msedge-dev、chrome-canary、msedge-canary
-driver               = "msedge"
-browser_path         = ""
-delay_time_s         = 10
-enabled_random_time  = true
+driver = "msedge"
+browser_path = ""
+delay_time_s = 10
+enabled_random_time = true
 
-question-urls=[
-    "https://example.com"
-]  # 空表数组，留 4 个占位
+Q_A_urls=[
 
+]  # 数组
 
 [llm]
-base_url   = "https://api.deepseek.com/v1"
-api_key    = "${OPENAI_API_KEY}" # api_key 由环境变量 OPENAI_API_KEY 提供，不在推荐此处写死
-model      = "deepseek-chat"
+base_url = "https://api.deepseek.com/v1"
+api_key = "${OPENAI_API_KEY}"            # api_key 由环境变量 OPENAI_API_KEY 提供，不在推荐此处写死
+model = "deepseek-chat"
 max_tokens = 500
 temperature = 1.3
 
@@ -41,8 +40,8 @@ file_path = "log/app.log"
 colorful_output = true
 
 # 日志轮转配置
-rotation = "10 MB"  # 单个日志文件最大大小
-retention = 5       # 保留历史日志文件数量
+rotation = "10 MB" # 单个日志文件最大大小
+retention = 5      # 保留历史日志文件数量
 
 # 时间戳格式
 time_format = "%Y-%m-%d %H:%M:%S"

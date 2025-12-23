@@ -19,7 +19,6 @@ def get_answer(question: str) -> str:
         # 使用新的 gen_answer 函数，它返回答案和用量信息的元组
         ans, usage_info = gen_answer(
             question=question,
-            context="你是一个严谨的中文学生，请你回答同学的问题来帮助同学，回答需满足：\n1. 用口语化中文，50字内分点回答\n2. 回避政治、暴力、伦理等敏感内容\n3. 若问题敏感，回复'此问题不便讨论'\n4. 禁用Markdown格式\n请确保内容符合中国法律法规。"
         )
         logger.info("请求成功！")
         logger.info(f"回答：{ans}")
@@ -37,6 +36,8 @@ def process_questions(questions: list) -> list:
         logger.info(f"处理中：{index}/{total_questions}")  # 显示当前进度
         ans = get_answer(q)
         answers.append(ans)
+        if index>24:
+            break
     return answers
 
 
